@@ -1,0 +1,76 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'LIJM:stack - Image process'
+Transform: 'AWS::Serverless-2016-10-31'
+
+Resources:
+  processBucket:
+    Type: 'AWS::S3::Bucket'
+    Description: 'LIJM:s3 - Image input repository'
+    DeletionPolicy: Delete
+    Properties:
+      BucketName: file-classifier-process-s3-02
+      AccessControl: Private
+
+  dynamoDBTable:
+    Type: 'AWS::DynamoDB::Table'
+    Description: 'LIJM:dynamodb - Result table'
+    DeletionPolicy: Delete
+    Properties:
+      TableName: process_result
+      AttributeDefinitions:
+        - AttributeName: UserId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: UserId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  classifyDocument:
+    Type: 'AWS::Serverless::Function'
+    Description: 'LIJM:lambda - Classify Document Process'
+    DeletionPolicy: Delete
+    DependsOn:
+      - dynamoDBTable
+    Properties:
+      CodeUri: .
+      Handler: ClassifyFileHandler::handleRequest
+      Runtime: java17
+      Description: Classify Document Function
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: '-XX:+TieredCompilation -XX:TieredStopAtLevel=1'
+      Tags:
+        classifier: DEV
+      MemorySize: 256
+      Timeout: 60
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AWSLambda_ReadOnlyAccess
+        - AWSXrayWriteOnlyAccess
+        - AWSLambdaVPCAccessExecutionRole
+        - AmazonS3FullAccess
+        - AmazonTextractFullAccess
+        - AmazonDynamoDBFullAccess
+        - ComprehendFullAccess
+      Tracing: Active
+      Events:
+        s3Notification:
+          Type: S3
+          Properties:
+            Bucket: !Ref processBucket
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: 'process/'
+
+  logGroup:
+    Type: AWS::Logs::LogGroup
+    Description: 'LIJM:logs - Logs group'
+    DeletionPolicy: Delete
+    DependsOn:
+      - classifyDocument
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${classifyDocument}"
+      RetentionInDays: 1
