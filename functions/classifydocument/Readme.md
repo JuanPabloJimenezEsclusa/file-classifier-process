@@ -21,7 +21,7 @@ Proyecto con la configuración de la infraestructura como código de un proceso 
          ┗ 📜TextractProxy.java
 ```
 
-![Function model architecture](./src/main/resources/diagrams/DA-file-process-aws-v1.png "Diagrama C1")
+![Function model architecture](./src/main/resources/diagrams/DA-file-process-aws-v1.svg "Diagrama C1")
 
 ## Servicios AWS
 

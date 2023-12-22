@@ -13,8 +13,8 @@ Proyecto para clasificar archivos por su contenido y extraer sus datos de forma 
 
 | Carpeta | Descripción |
 |---------|-------------|
-| [models](./models)| Contiene proyectos para crear modelos de clasificación personalizados |
-| [functions](./functions)| Contiene proyectos para clasificar archivos utilizando un modelo |
+| [models](./models/fileclassifiermodel)| Contiene proyectos para crear modelos de clasificación personalizados |
+| [functions](./functions/classifydocument)| Contiene proyectos para clasificar archivos utilizando un modelo |
 
 ## Domain Storytelling
 
@@ -26,7 +26,7 @@ Un sistema de manejo de documentos, enfrenta el desafío de manejar archivos en 
  
 * Desarrollo:
 
-*La Recepción de Archivos.* Diariamente, se reciben archivos de diferentes tipos, cada uno con su propio formato y contenido único.
+*La Recepción de Archivos.* Periódicamente, se reciben archivos de diferentes tipos, cada uno con su propio formato y contenido único.
 
 *La Clasificación Automática.* Se implementa un "Clasificador Automático" que utiliza algoritmos para asignar a cada archivo una categoría específica. Este proceso ayuda a organizar y entender mejor el contenido de los archivos.
 

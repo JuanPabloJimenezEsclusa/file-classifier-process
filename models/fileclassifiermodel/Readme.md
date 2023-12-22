@@ -33,7 +33,7 @@ Proyecto para crear vía API, modelos personalizados de clasificación de archiv
 | [entrypoint](src/main/java/org/lucas/classify/model/entrypoint/) | Contiene clases para crear puntos de entrada al modelo de clasificación |
 
 
-![Training model architecture](./src/main/resources/diagrams/DA-file-process-aws-training-v1.png "Training DA")
+![Training model architecture](./src/main/resources/diagrams/DA-file-process-aws-training-v1.svg "Training DA")
 
 ## Servicios AWS
 
